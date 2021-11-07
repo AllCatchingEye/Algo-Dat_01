@@ -40,6 +40,64 @@ class list {
 };
 
 template <typename K, typename V>
+list<K, V>::~list() {
+  // TODO
+}
+
+template <typename K, typename V>
+const V *list<K, V>::search(const K) const {
+  // TODO
+  return nullptr;
+}
+
+template <typename K, typename V>
+bool list<K, V>::isEmpty() const {
+  // TODO
+  return false;
+}
+
+template <typename K, typename V>
+bool list<K, V>::isSorted(std::function<bool(K, K)> lessThan) const {
+  // TODO
+  lessThan(head->key, head->key);
+  return false;
+}
+
+template <typename K, typename V>
+std::tuple<K, V> list<K, V>::popHead() {
+  // TODO
+  return std::tuple<K, V>();
+}
+
+template <typename K, typename V>
+void list<K, V>::sort(std::function<bool(K, K)> lessThan) {
+  // TODO
+  lessThan(head->key, head->key);
+}
+
+template <typename K, typename V>
+list<K, V> &list<K, V>::operator+=(const std::tuple<K, V>) {
+  // TODO
+  return *this;
+}
+
+template <typename K, typename V>
+list<K, V> &list<K, V>::operator-=(const K) {
+  // TODO
+  return *this;
+}
+
+template <typename K, typename V>
+void list<K, V>::printTo(std::ostream &ostr) const {
+  // TODO
+}
+
+template <typename K, typename V>
+list<K, V>::element::element(const std::tuple<K, V>, list::element *) {
+  // TODO
+}
+
+template <typename K, typename V>
 std::ostream &operator<<(std::ostream &ostr, const list<K, V> &list) {
   list.printTo(ostr);
   return ostr;
