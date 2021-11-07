@@ -63,9 +63,19 @@ bool list<K, V>::isEmpty() const {
 
 template <typename K, typename V>
 bool list<K, V>::isSorted(std::function<bool(K, K)> lessThan) const {
-  // TODO
-  lessThan(head->key, head->key);
-  return false;
+  auto first = head;
+
+  while (first != nullptr) {
+    auto second = first->next;
+
+    if (second != nullptr && lessThan(second->key, first->key)) {
+      return false;
+    }
+
+    first = second;
+  }
+
+  return true;
 }
 
 template <typename K, typename V>
