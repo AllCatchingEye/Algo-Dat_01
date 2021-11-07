@@ -133,8 +133,33 @@ list<K, V>& list<K, V>::operator+=(const std::tuple<K, V> tuple) {
 
 
 template <typename K, typename V>
-list<K, V> &list<K, V>::operator-=(const K) {
-  // TODO
+list<K, V>& list<K, V>::operator-=(const K key) {
+  if (isEmpty()) {
+    return *this;
+  }
+
+  if (head->key == key) {
+    auto next = head->next;
+    delete head;
+    head = next;
+
+    return *this;
+  }
+
+  auto elem = head;
+
+  do {
+    if (elem->next != nullptr && elem->next->key == key) {
+      auto next = elem->next->next;
+      delete elem->next;
+      elem->next = next;
+
+      return *this;
+    }
+
+    elem = elem->next;
+  } while (elem != nullptr);
+
   return *this;
 }
 
