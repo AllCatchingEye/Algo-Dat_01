@@ -19,6 +19,16 @@ class list {
 
   element *head = nullptr;
 
+  struct PartitionData {
+    element *firstLeft;
+    element *lastLeft;
+    element *firstRight;
+    element *lastRight;
+  };
+
+  PartitionData quicksort(element*, element*, std::function<bool(K, K)> lessThan);
+  PartitionData partition(element*, element*, std::function<bool(K, K)> lessThan);
+
  public:
   ~list();
 
@@ -105,8 +115,88 @@ std::tuple<K, V> list<K, V>::popHead() {
 
 template <typename K, typename V>
 void list<K, V>::sort(std::function<bool(K, K)> lessThan) {
-  // TODO
-  lessThan(head->key, head->key);
+  if (head == nullptr) {
+    return;
+  }
+
+  auto end = head;
+
+  while (end->next != nullptr) {
+    end = end->next;
+  }
+
+  auto partitionData = quicksort(head, end, lessThan);
+
+  head = partitionData.firstLeft;
+}
+
+template <typename K, typename V>
+typename list<K, V>::PartitionData list<K, V>::quicksort(list::element *first, list::element *last, std::function<bool(K, K)> lessThan) {
+  if (first == nullptr || first == last) {
+    PartitionData partitionData;
+    partitionData.firstLeft = first;
+    partitionData.lastLeft = first;
+    partitionData.firstRight = last;
+    partitionData.lastRight = last;
+
+    return partitionData;
+  }
+
+  auto partitionData = partition(first, last, lessThan);
+
+  auto left = quicksort(partitionData.firstLeft, partitionData.lastLeft, lessThan);
+  auto right = quicksort(partitionData.firstRight, partitionData.lastRight, lessThan);
+
+  left.lastRight->next = right.firstLeft;
+
+  partitionData.firstLeft = left.firstLeft;
+  partitionData.lastLeft = nullptr;
+  partitionData.firstRight = nullptr;
+  partitionData.lastRight = right.lastRight;
+
+  return partitionData;
+}
+
+
+template <typename K, typename V>
+typename list<K, V>::PartitionData list<K, V>::partition(list::element *first, list::element *last, std::function<bool(K, K)> lessThan) {
+  auto pivot = last;
+  auto newLast = pivot;
+
+  element *prev = nullptr;
+  auto current = first;
+  auto newFirst = first;
+
+  while (current != pivot) {
+    if (lessThan(current->key, pivot->key)) {
+      prev = current;
+      current = current->next;
+    } else {
+      auto next = current->next;
+
+      if (prev != nullptr) {
+        prev->next = next;
+      } else {
+        newFirst = next;
+      }
+
+      current->next = nullptr;
+
+      newLast->next = current;
+      newLast = current;
+
+      current = next;
+    }
+  }
+
+  PartitionData partitionData;
+
+  partitionData.firstLeft = newFirst;
+  partitionData.lastLeft = prev == nullptr ? newFirst : prev;
+  partitionData.firstRight = pivot == newLast ? newLast : pivot->next;
+  partitionData.lastRight = newLast;
+
+  return partitionData;
 }
 
 template <typename K, typename V>
