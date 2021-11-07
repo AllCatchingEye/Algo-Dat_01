@@ -50,6 +50,12 @@ TEST(ListTest, SearchTest_NotFound) {
   EXPECT_EQ(nullptr, l.search(3));
 }
 
+TEST(ListTest, SearchTest_NotFoundInEmptyList) {
+  list<int, std::string> l;
+
+  EXPECT_EQ(nullptr, l.search(1));
+}
+
 // insert and popHead
 
 TEST(ListTest, InsertTest_OneElementInList) {
