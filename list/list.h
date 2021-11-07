@@ -70,8 +70,18 @@ bool list<K, V>::isSorted(std::function<bool(K, K)> lessThan) const {
 
 template <typename K, typename V>
 std::tuple<K, V> list<K, V>::popHead() {
-  // TODO
-  return std::tuple<K, V>();
+  if (isEmpty()) {
+    throw "List was empty!";
+  }
+
+  auto key = head->key;
+  auto value = head->value;
+  auto next = head->next;
+
+  delete head;
+  head = next;
+
+  return std::make_tuple(key, value);
 }
 
 template <typename K, typename V>
