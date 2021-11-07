@@ -65,6 +65,12 @@ TEST(ListTest, InsertTest_TwoElementsWithSameKey) {
   EXPECT_EQ(tin2, tout1);
 }
 
+TEST(ListTest, PopHeadIfNotExists) {
+  list<int, std::string> l;
+  EXPECT_TRUE(l.isEmpty());
+  EXPECT_ANY_THROW(l.popHead());
+}
+
 // remove
 
 TEST(ListTest, RemoveTest_OneElementInList) {
