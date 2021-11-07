@@ -181,3 +181,18 @@ TEST(ListTest, TestIsSorted) {
 
   EXPECT_TRUE(l.isSorted(lessThan));
 }
+
+TEST(ListTest, TestIsNotSorted) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(2, "Zwei");
+  std::tuple<int, std::string> tin2(1, "Eins");
+
+  l += tin1;
+  l += tin2;
+
+  auto lessThan = [](int left, int right){
+    return left < right;
+  };
+
+  EXPECT_FALSE(l.isSorted(lessThan));
+}
