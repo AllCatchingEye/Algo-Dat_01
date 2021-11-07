@@ -169,6 +169,32 @@ TEST(ListTest, SortTest_OneElementInList) {
   EXPECT_TRUE(l.isSorted(lessThan));
 }
 
+TEST(ListTest, SortTest_SortedTwoElementsInList) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  std::tuple<int, std::string> tin2(2, "Zwei");
+  l += tin1;
+  l += tin2;
+  auto lessThan = [](int x, int y) { return x < y; };
+  EXPECT_TRUE(l.isSorted(lessThan));
+  l.sort(lessThan);
+  EXPECT_TRUE(l.isSorted(lessThan));
+}
+
+TEST(ListTest, SortTest_SortedThreeElementsInList) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  std::tuple<int, std::string> tin2(2, "Zwei");
+  std::tuple<int, std::string> tin3(3, "Drei");
+  l += tin1;
+  l += tin2;
+  l += tin3;
+  auto lessThan = [](int x, int y) { return x < y; };
+  EXPECT_TRUE(l.isSorted(lessThan));
+  l.sort(lessThan);
+  EXPECT_TRUE(l.isSorted(lessThan));
+}
+
 TEST(ListTest, SortTest_TwoElementsInList) {
   list<int, std::string> l;
   std::tuple<int, std::string> tin1(1, "Eins");
