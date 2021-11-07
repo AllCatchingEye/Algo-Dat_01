@@ -26,6 +26,20 @@ TEST(ListTest, SearchTest_OneElementInList) {
   EXPECT_EQ("Eins", *l.search(1));
 }
 
+TEST(ListTest, SearchTest_FourElementInList) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  std::tuple<int, std::string> tin2(2, "Zwei");
+  std::tuple<int, std::string> tin3(3, "Drei");
+  std::tuple<int, std::string> tin4(4, "Vier");
+  l += tin1;
+  l += tin2;
+  l += tin3;
+  l += tin4;
+
+  EXPECT_EQ("Vier", *l.search(4));
+}
+
 TEST(ListTest, SearchTest_NotFound) {
   list<int, std::string> l;
   std::tuple<int, std::string> tin1(1, "Eins");
