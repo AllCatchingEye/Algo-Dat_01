@@ -26,6 +26,16 @@ TEST(ListTest, SearchTest_OneElementInList) {
   EXPECT_EQ("Eins", *l.search(1));
 }
 
+TEST(ListTest, SearchTest_NotFound) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  std::tuple<int, std::string> tin2(2, "Zwei");
+  l += tin1;
+  l += tin2;
+
+  EXPECT_EQ(nullptr, l.search(3));
+}
+
 // insert and popHead
 
 TEST(ListTest, InsertTest_OneElementInList) {
