@@ -41,7 +41,13 @@ class list {
 
 template <typename K, typename V>
 list<K, V>::~list() {
-  // TODO
+  auto elem = head;
+
+  while (elem != nullptr) {
+    auto next = elem->next;
+    delete elem;
+    elem = next;
+  }
 }
 
 template <typename K, typename V>
