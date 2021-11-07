@@ -151,6 +151,14 @@ TEST(ListTest, RemoveTest_TwoElementsWithSameKey) {
 
 // sort
 
+TEST(ListTest, SortTest_EmptyList) {
+  list<int, std::string> l;
+  auto lessThan = [](int x, int y) { return x < y; };
+  EXPECT_TRUE(l.isSorted(lessThan));
+  l.sort(lessThan);
+  EXPECT_TRUE(l.isSorted(lessThan));
+}
+
 TEST(ListTest, SortTest_TwoElementsInList) {
   list<int, std::string> l;
   std::tuple<int, std::string> tin1(1, "Eins");
