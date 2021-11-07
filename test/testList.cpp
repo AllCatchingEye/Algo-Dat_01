@@ -196,3 +196,13 @@ TEST(ListTest, TestIsNotSorted) {
 
   EXPECT_FALSE(l.isSorted(lessThan));
 }
+
+TEST(ListTest, TestIsSortedEmptyList) {
+  list<int, std::string> l;
+
+  auto lessThan = [](int left, int right){
+    return left < right;
+  };
+
+  EXPECT_TRUE(l.isSorted(lessThan));
+}
