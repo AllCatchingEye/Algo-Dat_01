@@ -9,6 +9,14 @@ TEST(ListTest, Test_EmptyList) {
   EXPECT_TRUE(l.isEmpty());
 }
 
+TEST(ListTest, Test_NotEmptyList) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  l += tin1;
+
+  EXPECT_FALSE(l.isEmpty());
+}
+
 // insert and search
 
 TEST(ListTest, SearchTest_OneElementInList) {
