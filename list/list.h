@@ -108,14 +108,15 @@ void list<K, V>::printTo(std::ostream &ostr) const {
 }
 
 template <typename K, typename V>
-list<K, V>::element::element(const std::tuple<K, V>, list::element *) {
-  // TODO
-}
-
-template <typename K, typename V>
 std::ostream &operator<<(std::ostream &ostr, const list<K, V> &list) {
   list.printTo(ostr);
   return ostr;
+}
+
+template <typename K, typename V>
+list<K, V>::element::element(const std::tuple<K, V> tuple, list::element *elem) : key(std::get<0>(tuple)) {
+  value = std::get<1>(tuple);
+  next = elem;
 }
 
 #endif  // LINKEDLIST_LIST_H
