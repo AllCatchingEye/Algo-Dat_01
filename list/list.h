@@ -164,8 +164,14 @@ list<K, V>& list<K, V>::operator-=(const K key) {
 }
 
 template <typename K, typename V>
-void list<K, V>::printTo(std::ostream &ostr) const {
-  // TODO
+void list<K, V>::printTo(std::ostream& ostr) const {
+  auto elem = head;
+
+  while (elem != nullptr) {
+    ostr << elem->key << '.' << elem->value << std::endl;
+
+    elem = elem->next;
+  }
 }
 
 template <typename K, typename V>
