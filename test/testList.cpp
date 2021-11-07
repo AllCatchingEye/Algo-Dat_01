@@ -159,6 +159,16 @@ TEST(ListTest, SortTest_EmptyList) {
   EXPECT_TRUE(l.isSorted(lessThan));
 }
 
+TEST(ListTest, SortTest_OneElementInList) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  l += tin1;
+  auto lessThan = [](int x, int y) { return x < y; };
+  EXPECT_TRUE(l.isSorted(lessThan));
+  l.sort(lessThan);
+  EXPECT_TRUE(l.isSorted(lessThan));
+}
+
 TEST(ListTest, SortTest_TwoElementsInList) {
   list<int, std::string> l;
   std::tuple<int, std::string> tin1(1, "Eins");
