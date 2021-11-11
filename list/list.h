@@ -19,15 +19,7 @@ class list {
 
   element *head = nullptr;
 
-  struct PartitionData {
-    element *firstLeft;
-    element *lastLeft;
-    element *firstRight;
-    element *lastRight;
-  };
-
-  PartitionData quicksort(element*, element*, std::function<bool(K, K)> lessThan);
-  PartitionData partition(element*, element*, std::function<bool(K, K)> lessThan);
+  element* quicksort(element*, std::function<bool(K, K)> lessThan);
 
  public:
   ~list();
@@ -119,84 +111,46 @@ void list<K, V>::sort(std::function<bool(K, K)> lessThan) {
     return;
   }
 
-  auto end = head;
-
-  while (end->next != nullptr) {
-    end = end->next;
-  }
-
-  auto partitionData = quicksort(head, end, lessThan);
-
-  head = partitionData.firstLeft;
+  head = quicksort(head, lessThan);
 }
 
 template <typename K, typename V>
-typename list<K, V>::PartitionData list<K, V>::quicksort(list::element *first, list::element *last, std::function<bool(K, K)> lessThan) {
-  if (first == nullptr || first == last) {
-    PartitionData partitionData;
-    partitionData.firstLeft = first;
-    partitionData.lastLeft = first;
-    partitionData.firstRight = last;
-    partitionData.lastRight = last;
-
-    return partitionData;
+typename list<K, V>::element* list<K, V>::quicksort(list::element *first, std::function<bool(K, K)> lessThan) {
+  if (first == nullptr || first->next == nullptr) {
+    return first;
   }
 
-  auto partitionData = partition(first, last, lessThan);
+  element *pivot = first;
 
-  auto left = quicksort(partitionData.firstLeft, partitionData.lastLeft, lessThan);
-  auto right = quicksort(partitionData.firstRight, partitionData.lastRight, lessThan);
+  element* previous = first;
+  element* current = first->next;
 
-  left.lastRight->next = right.firstLeft;
+  // becomes new head
+  element *lower = pivot;
 
-  partitionData.firstLeft = left.firstLeft;
-  partitionData.lastLeft = nullptr;
-  partitionData.firstRight = nullptr;
-  partitionData.lastRight = right.lastRight;
-
-  return partitionData;
-}
-
-
-template <typename K, typename V>
-typename list<K, V>::PartitionData list<K, V>::partition(list::element *first, list::element *last, std::function<bool(K, K)> lessThan) {
-  auto pivot = last;
-  auto newLast = pivot;
-
-  element *prev = nullptr;
-  auto current = first;
-  auto newFirst = first;
-
-  while (current != pivot) {
+  do {
     if (lessThan(current->key, pivot->key)) {
-      prev = current;
-      current = current->next;
-    } else {
-      auto next = current->next;
+      element *next = current->next;
 
-      if (prev != nullptr) {
-        prev->next = next;
-      } else {
-        newFirst = next;
-      }
+      current->next = lower;
+      lower = current;
 
-      current->next = nullptr;
-
-      newLast->next = current;
-      newLast = current;
-
+      previous->next = next;
       current = next;
+    } else {
+      previous = current;
+      current = current->next;
     }
-  }
+  } while(current != nullptr);
 
-  PartitionData partitionData;
+  element *upper = pivot->next;
+  pivot->next = nullptr;
 
-  partitionData.firstLeft = newFirst;
-  partitionData.lastLeft = prev == nullptr ? newFirst : prev;
-  partitionData.firstRight = pivot == newLast ? newLast : pivot->next;
-  partitionData.lastRight = newLast;
+  lower = quicksort(lower, lessThan);
+  upper = quicksort(upper, lessThan);
 
-  return partitionData;
+  pivot->next = upper;
+  return lower;
 }
 
 template <typename K, typename V>
