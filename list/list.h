@@ -114,6 +114,17 @@ void list<K, V>::sort(std::function<bool(K, K)> lessThan) {
   head = quicksort(head, lessThan);
 }
 
+/*
+ * Quicksort
+ * Aufwand O(n^2)
+ *
+ * Die Wahl des Pivot elements fällt hier immer auf das erste element der Liste.
+ * Dies führt besonders bei bereits sortierten Listen zu einem quadratischen Laufzeitverhalten,
+ * da die rekursive Tiefe gleich der Anzahl der Elemente ist.
+ *
+ * Idealerweise sollte der Pivot so gewählt werden, dass die Liste in jedem Rekursionsschritt
+ * halbiert wird. Die Wahrscheinlichkeit hierfür ist, bei einer fixen Pivot Position, aber eher gering.
+ */
 template <typename K, typename V>
 typename list<K, V>::element* list<K, V>::quicksort(list::element *first, std::function<bool(K, K)> lessThan) {
   if (first == nullptr || first->next == nullptr) {
