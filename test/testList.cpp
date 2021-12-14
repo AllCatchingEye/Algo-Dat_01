@@ -9,6 +9,14 @@ TEST(ListTest, Test_EmptyList) {
   EXPECT_TRUE(l.isEmpty());
 }
 
+TEST(ListTest, Test_NotEmptyList) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  l += tin1;
+
+  EXPECT_FALSE(l.isEmpty());
+}
+
 // insert and search
 
 TEST(ListTest, SearchTest_OneElementInList) {
@@ -16,6 +24,36 @@ TEST(ListTest, SearchTest_OneElementInList) {
   std::tuple<int, std::string> tin(1, "Eins");
   l += tin;
   EXPECT_EQ("Eins", *l.search(1));
+}
+
+TEST(ListTest, SearchTest_FourElementInList) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  std::tuple<int, std::string> tin2(2, "Zwei");
+  std::tuple<int, std::string> tin3(3, "Drei");
+  std::tuple<int, std::string> tin4(4, "Vier");
+  l += tin1;
+  l += tin2;
+  l += tin3;
+  l += tin4;
+
+  EXPECT_EQ("Vier", *l.search(4));
+}
+
+TEST(ListTest, SearchTest_NotFound) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  std::tuple<int, std::string> tin2(2, "Zwei");
+  l += tin1;
+  l += tin2;
+
+  EXPECT_EQ(nullptr, l.search(3));
+}
+
+TEST(ListTest, SearchTest_NotFoundInEmptyList) {
+  list<int, std::string> l;
+
+  EXPECT_EQ(nullptr, l.search(1));
 }
 
 // insert and popHead
@@ -55,6 +93,12 @@ TEST(ListTest, InsertTest_TwoElementsWithSameKey) {
   auto tout1 = l.popHead();
   EXPECT_TRUE(l.isEmpty());
   EXPECT_EQ(tin2, tout1);
+}
+
+TEST(ListTest, PopHeadIfNotExists) {
+  list<int, std::string> l;
+  EXPECT_TRUE(l.isEmpty());
+  EXPECT_ANY_THROW(l.popHead());
 }
 
 // remove
@@ -107,6 +151,50 @@ TEST(ListTest, RemoveTest_TwoElementsWithSameKey) {
 
 // sort
 
+TEST(ListTest, SortTest_EmptyList) {
+  list<int, std::string> l;
+  auto lessThan = [](int x, int y) { return x < y; };
+  EXPECT_TRUE(l.isSorted(lessThan));
+  l.sort(lessThan);
+  EXPECT_TRUE(l.isSorted(lessThan));
+}
+
+TEST(ListTest, SortTest_OneElementInList) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  l += tin1;
+  auto lessThan = [](int x, int y) { return x < y; };
+  EXPECT_TRUE(l.isSorted(lessThan));
+  l.sort(lessThan);
+  EXPECT_TRUE(l.isSorted(lessThan));
+}
+
+TEST(ListTest, SortTest_SortedTwoElementsInList) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  std::tuple<int, std::string> tin2(2, "Zwei");
+  l += tin1;
+  l += tin2;
+  auto lessThan = [](int x, int y) { return x < y; };
+  EXPECT_TRUE(l.isSorted(lessThan));
+  l.sort(lessThan);
+  EXPECT_TRUE(l.isSorted(lessThan));
+}
+
+TEST(ListTest, SortTest_SortedThreeElementsInList) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  std::tuple<int, std::string> tin2(2, "Zwei");
+  std::tuple<int, std::string> tin3(3, "Drei");
+  l += tin1;
+  l += tin2;
+  l += tin3;
+  auto lessThan = [](int x, int y) { return x < y; };
+  EXPECT_TRUE(l.isSorted(lessThan));
+  l.sort(lessThan);
+  EXPECT_TRUE(l.isSorted(lessThan));
+}
+
 TEST(ListTest, SortTest_TwoElementsInList) {
   list<int, std::string> l;
   std::tuple<int, std::string> tin1(1, "Eins");
@@ -157,4 +245,44 @@ TEST(ListTest, SortTest_SevenElementsInList) {
   EXPECT_FALSE(l.isSorted(greaterThan));
   l.sort(greaterThan);
   EXPECT_TRUE(l.isSorted(greaterThan));
+}
+
+TEST(ListTest, TestIsSorted) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(1, "Eins");
+  std::tuple<int, std::string> tin2(2, "Zwei");
+
+  l += tin1;
+  l += tin2;
+
+  auto lessThan = [](int left, int right){
+    return left < right;
+  };
+
+  EXPECT_TRUE(l.isSorted(lessThan));
+}
+
+TEST(ListTest, TestIsNotSorted) {
+  list<int, std::string> l;
+  std::tuple<int, std::string> tin1(2, "Zwei");
+  std::tuple<int, std::string> tin2(1, "Eins");
+
+  l += tin1;
+  l += tin2;
+
+  auto lessThan = [](int left, int right){
+    return left < right;
+  };
+
+  EXPECT_FALSE(l.isSorted(lessThan));
+}
+
+TEST(ListTest, TestIsSortedEmptyList) {
+  list<int, std::string> l;
+
+  auto lessThan = [](int left, int right){
+    return left < right;
+  };
+
+  EXPECT_TRUE(l.isSorted(lessThan));
 }
